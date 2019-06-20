@@ -1,0 +1,48 @@
+{
+  "name": "nbomb-core",
+  "version": "0.5.2",
+  "description": "nbomb core",
+  "main": "src/index",
+  "typings": "src/index.d.ts",
+  "scripts": {
+    "lint": "../../node_modules/.bin/tslint --format prose -c ../../tslint.json --fix 'src/**/*.ts' 'test/**/*.ts'",
+    "test": "npm run lint && midway-bin clean && NODE_ENV=test midway-bin test --ts",
+    "cov": "midway-bin cov --ts",
+    "ci": "npm run test",
+    "autod": "midway-bin autod"
+  },
+  "keywords": [
+    "nest",
+    "egg",
+    "webframework"
+  ],
+  "files": [
+    "src",
+    "app",
+    "config",
+    "dist",
+    "d.ts"
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "nbomb-bin": "^0.5.0"
+  },
+  "dependencies": {
+    "@eggjs/router": "^2.0.0",
+    "debug": "^4.1.1",
+    "egg": "^2.20.0",
+    "egg-core": "^4.15.0",
+    "egg-logger": "^2.3.2",
+    "inflection": "^1.12.0",
+    "is-type-of": "^1.2.0",
+    "mkdirp": "^0.5.1",
+    "reflect-metadata": "^0.1.13",
+    "rxjs": "^6.4.0",
+    "uuid": "^3.3.2"
+  },
+  "author": "Y.V",
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/yviscool/nuke.git"
+  }
+}

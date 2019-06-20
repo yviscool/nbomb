@@ -1,0 +1,42 @@
+{
+  "name": "nbomb",
+  "version": "0.5.3",
+  "description": "nbomb Main Package",
+  "main": "src/index",
+  "typings": "src/index.d.ts",
+  "scripts": {
+    "lint": "../../node_modules/.bin/tslint --format prose -c ../../tslint.json --fix 'src/**/*.ts'",
+    "test": "midway-bin test --ts",
+    "cov": "midway-bin cov --ts",
+    "ci": "npm run test",
+    "autod": "midway-bin autod"
+  },
+  "keywords": [
+    "nest",
+    "egg",
+    "webframework"
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "nbomb-bin": "0.5.0"
+  },
+  "dependencies": {
+    "egg-cluster": "^1.23.0",
+    "nbomb-core": "0.5.2"
+  },
+  "files": [
+    "bin",
+    "cluster",
+    "dist",
+    "server.js",
+    "src"
+  ],
+  "engines": {
+    "node": ">= 8.0.0"
+  },
+  "author": "Y.V",
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/yviscool/nuke.git"
+  }
+}
