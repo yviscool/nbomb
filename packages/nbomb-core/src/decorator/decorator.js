@@ -18,6 +18,7 @@ const {
   ROUTE_NAME_METADATA,
   RENDER_METADATA,
   HEADER_METADATA,
+  PRIORITY_METADATA
 } = require('../loader/constants');
 
 
@@ -167,6 +168,13 @@ exports.Catch = function Catch(...exceptions) {
 exports.Controller = function Controller(prefix = '/') {
   return target => {
     Reflector.set(PATH_METADATA, { prefix: validatePath(prefix) }, target);
+  };
+};
+
+// PRIORITY_METADATA 
+exports.Priority = function Priority(priority = 0) {
+  return target => {
+    Reflector.set(PRIORITY_METADATA, priority , target);
   };
 };
 

@@ -93,6 +93,7 @@ exports.REST_MAP = {
 exports.PATH_METADATA = '__pathMetadata__';
 exports.METHOD_METADATA = '__methodMetadata__';
 exports.ROUTE_NAME_METADATA = '__routeNameMetadata__';
+exports.PRIORITY_METADATA = '__priorityMetadata__';
 
 exports.GUARDS_METADATA = '__guardsMetadata__';
 exports.PIPES_METADATA = '__pipesMetadata__';

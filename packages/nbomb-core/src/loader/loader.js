@@ -35,8 +35,11 @@ class AppWorkerLoader extends MidwayWebLoader {
     this.loadRouter(); // Dependent on controllers
 
 
-
     this.loadCustomLoader();
+
+    this.app.beforeStart(async () => {
+      await this.loadNukeController();
+    });
   }
 
 }

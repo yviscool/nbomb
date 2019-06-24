@@ -1,15 +1,12 @@
 // import { EggRouter as Router } from '@eggjs/router';
-const fs = require('fs');
-const path = require('path');
 const assert = require('assert');
 const is = require('is-type-of');
 const inflection = require('inflection');
-const extend = require('extend2');
 
 const { ContextCreator, ExceptionHanlder, RouterExecutionContext, RouterParamFactory, RouterProxy } = require('../proxy');
 
-const { RequestMethod, REST_MAP } = require('./constants');
-const { isTypeScriptEnvironment, path: utilpath, safeRequire } = require('../utils');
+const { RequestMethod, REST_MAP, PRIORITY_METADATA } = require('./constants');
+const { path: utilpath, safeRequire } = require('../utils');
 const FileLoader =  require('./file_loader');
 const  MiddlewaresConsumer  = require('./middleware');
 
@@ -19,10 +16,6 @@ const EggLoader = require('egg-core').EggLoader;
 const EggFileLoader = require('egg-core/lib/loader/file_loader');
 
 const EggRouter = safeRequire('egg-core/lib/utils/router') || require('@eggjs/router').EggRouter;
-
-
-const TS_SRC_DIR = 'src';
-const TS_TARGET_DIR = 'dist';
 
 const ConfigValidator = {
 
@@ -71,6 +64,8 @@ class NukeWebLoader extends EggLoader {
         return Reflect.getMetadata(metadataKey, klass, key);
       },
     }
+
+    this.prioritySortRouters = [];
   }
 
   /**
@@ -140,7 +135,7 @@ class NukeWebLoader extends EggLoader {
 
   resolveRouters() {
 
-    for (const { routerPaths, routerMetadata, properties /* metatype*/ } of this.container.values()) {
+    for (const { routerPaths, routerMetadata, properties , metatype  } of this.container.values()) {
 
       const { name = '', prefix, isRestful } = routerMetadata || {};
 
@@ -171,14 +166,31 @@ class NukeWebLoader extends EggLoader {
         this.register(properties, router, { name, prefix: '/' });
       }
 
-      // ensure egg.router.verb before egg.router.use()
-      this.app.beforeStart(() => {
-        // app.router.use(globalPrefix + basePath, router.routes());
-        this.app.router.use(router.routes());
-      });
+
+      const priority = Reflect.getMetadata(PRIORITY_METADATA, metatype);
+
+      this.prioritySortRouters.push({ priority, router });
+
+      // // ensure egg.router.verb before egg.router.use()
+      // this.app.beforeStart(() => {
+      //   // app.router.use(globalPrefix + basePath, router.routes());
+      //   this.app.router.use(router.routes());
+      // });
 
     }
 
+  }
+
+  loadNukeController() {
+      // implement @priority
+      if (this.prioritySortRouters.length) {
+
+        this.prioritySortRouters = this.prioritySortRouters.sort((routerA, routerB) => routerB.priority - routerA.priority);
+  
+        this.prioritySortRouters.forEach((prioritySortRouter) => {
+          this.app.use(prioritySortRouter.router.routes());
+        });
+      }
   }
 
   register(properties, router, { name, prefix }) {
